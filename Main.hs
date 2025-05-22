@@ -7,7 +7,7 @@ import System.IO (hFlush, stdout)
 main :: IO ()
 main = menuPrincipal
 
--- Menú principal con repetición
+-- Menu principal con repeticion
 menuPrincipal :: IO ()
 menuPrincipal = do
     putStrLn "\n===== MENU PRINCIPAL ====="
@@ -25,7 +25,7 @@ menuPrincipal = do
         "4" -> putStrLn "Saliendo del programa. ¡Hasta luego!"
         _   -> putStrLn "Opcion invalida, intente de nuevo." >> menuPrincipal
 
--- Opción 1: Crear usuario
+-- Opcion 1: Crear usuario
 opcionCrearUsuario :: IO ()
 opcionCrearUsuario = do
     putStrLn "\n=== CREAR USUARIO ==="
@@ -36,7 +36,7 @@ opcionCrearUsuario = do
 
     crearUsuario nombre pinCreado
 
--- Opción 1: Iniciar Sesion 
+-- Opcion 1: Iniciar Sesion 
 
 iniciarSesion :: IO()
 iniciarSesion = do 
@@ -59,7 +59,7 @@ iniciarSesion = do
 
     
 
--- Opción 2: Probar el cifrado simple
+-- Opcion 2: Probar el cifrado simple
 opcionProbarCifrado :: IO ()
 opcionProbarCifrado = do
     putStrLn "\n=== PRUEBA DE CIFRADO ==="

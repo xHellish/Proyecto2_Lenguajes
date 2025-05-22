@@ -1,4 +1,4 @@
--- Registro y validación de pin
+-- Registro y validacion de pin
 
 
 module ModeloUsuarios (Usuario(..), crearUsuario, validarPin) where
@@ -7,7 +7,7 @@ import Cifrado
 import System.IO
 
 
--- Definición de un usuario
+-- Definicion de un usuario
 data Usuario = Usuario {
     nombreUsuario :: String,
     pinUsuario    :: String
@@ -37,8 +37,8 @@ crearUsuario nombre pin = do
 
 -- Revisar que el nombre de usuario no exista previamente en los usuarios con dicha contraseña
 revisarNoExiste :: String -> FilePath  -> IO Bool
-revisarNoExiste "" _ = error "El usuario no puede esta vacío"
-revisarNoExiste _ "" = error "La clave no puede esta vacía"
+revisarNoExiste "" _ = error "El usuario no puede esta vacio"
+revisarNoExiste _ "" = error "La clave no puede esta vacia"
 revisarNoExiste nombre filepath = do
 
     -- primero listamos todos los txts 
@@ -56,7 +56,7 @@ revisarNoExiste nombre filepath = do
 validarPin :: String -> String -> IO Bool
 validarPin nombre pin = do
 
-    -- Funciona así:
+    -- Funciona asi:
     -- internamente como tal los archivos no tienen el contenido de su nombre - pin
     -- la forma de saber si existe, es si existe un archivo con su nombre cifrado
     -- en caso de no encontrarlo hay dos posibles razones 

@@ -73,7 +73,7 @@ eliminarLinea archivo n = do
     -- se escribe el nuevo contenido al archivo
     writeFile archivo (unlines nuevasLineas)
 
--- Elimina el elemento en la posición n de una lista
+-- Elimina el elemento en la posicion n de una lista
 eliminarEn :: Int -> [String] -> [String]
 eliminarEn _ [] = []
 eliminarEn n (x:xs) 
