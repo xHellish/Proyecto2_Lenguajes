@@ -12,17 +12,15 @@ menuPrincipal :: IO ()
 menuPrincipal = do
     putStrLn "\n===== MENU PRINCIPAL ====="
     putStrLn "1. Crear usuario"
-    putStrLn "2. Probar cifrado de un mensaje"
-    putStrLn "3. Iniciar Sesion"
-    putStrLn "4. Salir"
+    putStrLn "2. Iniciar Sesion"
+    putStrLn "3. Salir"
     putStr "Seleccione una opcion: "
     hFlush stdout
     opcion <- getLine
     case opcion of
         "1" -> opcionCrearUsuario >> menuPrincipal
-        "2" -> opcionProbarCifrado >> menuPrincipal
-        "3" -> iniciarSesion
-        "4" -> putStrLn "Saliendo del programa. ¡Hasta luego!"
+        "2" -> iniciarSesion
+        "3" -> putStrLn "Saliendo del programa. ¡Hasta luego!"
         _   -> putStrLn "Opcion invalida, intente de nuevo." >> menuPrincipal
 
 -- Opcion 1: Crear usuario
@@ -36,7 +34,7 @@ opcionCrearUsuario = do
 
     crearUsuario nombre pinCreado
 
--- Opcion 1: Iniciar Sesion 
+-- Opcion 2: Iniciar Sesion 
 
 iniciarSesion :: IO()
 iniciarSesion = do 
@@ -58,20 +56,3 @@ iniciarSesion = do
     menuPrincipal
 
     
-
--- Opcion 2: Probar el cifrado simple
-opcionProbarCifrado :: IO ()
-opcionProbarCifrado = do
-    putStrLn "\n=== PRUEBA DE CIFRADO ==="
-    putStr "Ingrese la clave (PIN): "
-    hFlush stdout
-    clave <- getLine
-    putStr "Ingrese el mensaje a cifrar: "
-    hFlush stdout
-    mensaje <- getLine
-
-    let cifrado = cifrarConXor clave mensaje
-    let descifrado = cifrarConXor clave cifrado
-
-    putStrLn ("Mensaje cifrado: " ++ cifrado)
-    putStrLn ("Mensaje descifrado: " ++ descifrado)

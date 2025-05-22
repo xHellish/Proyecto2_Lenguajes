@@ -42,7 +42,7 @@ obtenerLinea idx ruta = do
 
     -- se retorna la linea correspondiente al índice
     if idx < 0 || idx >= length lineas
-    then return "Índice fuera de rango"
+    then return "Indice fuera de rango"
     else return (lineas !! idx)
 
 

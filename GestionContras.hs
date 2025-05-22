@@ -21,7 +21,8 @@ menuGestionContraseñas usuario = do
     putStrLn "1. Guardar Contraseña"
     putStrLn "2. Modificar Valor"
     putStrLn "3. Eliminar Contraseña"
-    putStrLn "4. Cerrar Sesion"
+    putStrLn "4. Ver Contraseña"
+    putStrLn "5. Cerrar Sesion"
     putStr "Seleccione una opcion: "
     hFlush stdout
     opcion <- getLine
@@ -29,7 +30,8 @@ menuGestionContraseñas usuario = do
         "1" -> menuGuardarContraseña usuario >> menuGestionContraseñas usuario
         "2" -> menuModificarValor usuario >> menuGestionContraseñas usuario
         "3" -> menuEliminarContraseña usuario >> menuGestionContraseñas usuario
-        "4" -> putStrLn "Cerrando sesion. ¡Hasta luego!"
+        "4" -> menuVerContraseña usuario >> menuGestionContraseñas usuario
+        "5" -> putStrLn "Cerrando sesion. ¡Hasta luego!"
         _   -> putStrLn "Opcion invalida, intente de nuevo." >> menuGestionContraseñas usuario
 
 
@@ -75,7 +77,68 @@ guardarContraseña servicio user pass usuario = do
     agregarAlFinal nombreArchivo linea
 
 
--- Opcion 2: Eliminar contraseña 
+-- Opción 2: Modificar contraseña
+
+menuModificarValor :: Usuario -> IO()
+menuModificarValor user = do
+    putStrLn "\n===== MODIFICAR VALOR ====="
+    putStrLn "Que desea modificar?"
+    putStrLn "1. Usuario"
+    putStrLn "2. Contraseña"
+    putStr "Seleccione una opcion: "
+    hFlush stdout
+    opcion <- getLine
+
+    -- ahora se pide que servicio modificar
+    putStrLn "\nA que servicio pertence?"
+    listarContraseñas user
+    putStr "Seleccione una opcion: "
+    hFlush stdout
+    servicio <- getLine
+
+
+    -- finalmente se pide el nuevo valor
+    putStr "Digite el nuevo valor: "
+    hFlush stdout
+    nuevoValor <- getLine
+    
+    let option = (read opcion :: Int) 
+    let service = (read servicio :: Int) - 1 -- esto porque el usuario ve el servicio desde 1, pero en el archivo se guarda desde 0
+
+    cambiarValor option service nuevoValor user
+
+cambiarValor :: Int -> Int -> String -> Usuario -> IO()
+cambiarValor opcion servicio nuevoValor usuario = do
+
+    -- montamos la ruta del archivo
+    let pin = pinUsuario usuario
+    let nombre = nombreUsuario usuario
+    let nombreArchivo = "usuarios/" ++ cifrarConXor pin nombre ++ ".txt"
+
+    linea <- obtenerLinea servicio nombreArchivo
+    let lista = words linea
+    let listaDesencriptada = desencriptarLista lista pin
+
+    -- se elimina informacion antigua
+    eliminarLinea nombreArchivo servicio
+
+    let nuevaLista = reemplazarEnIndice opcion nuevoValor listaDesencriptada 
+    print listaDesencriptada 
+    print nuevaLista
+    -- una vez hecho esto se vuelve a guardar la nueva lista
+    -- [servicio, user, pass]
+    guardarContraseña (head nuevaLista) (nuevaLista !! 1) (nuevaLista !! 2) usuario
+
+
+-- se usa para reemplezar con el nuevo valor
+reemplazarEnIndice :: Int -> a -> [a] -> [a]
+reemplazarEnIndice idx valor (x:xs) 
+    | idx == 0 = valor : xs
+    | otherwise = x : reemplazarEnIndice (idx - 1) valor xs 
+
+
+-- Opción 3: Eliminar contraseña 
+
 menuEliminarContraseña :: Usuario -> IO()
 menuEliminarContraseña usuario = do
     putStrLn "\n===== ELIMINAR CONTRASEÑA ====="
