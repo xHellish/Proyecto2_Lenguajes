@@ -141,12 +141,22 @@ listarContraseñasAux handle pin index = do
 
             let listaDesencriptada = desencriptarLista lista pin
 
-            putStrLn (show index ++". " ++"Servicio: "++ show (head listaDesencriptada) ++ " Usuario: " ++show (listaDesencriptada !! 1) ++ " Contraseña: " ++ show (listaDesencriptada !! 2))
+            -- no se muestran las letras del user luego de la cuarta letra
+            let user = encryptUser (listaDesencriptada !! 1) 
+            -- se imprime la contraseña con *
+            print ( listaDesencriptada !! 2)
+            let pass = replicate (length (listaDesencriptada !! 2)) '*'
+
+            putStrLn (show index ++". " ++"Servicio: "++ show (head listaDesencriptada) ++ " Usuario: " ++ user ++ " Contraseña: " ++ pass)
 
 
             listarContraseñasAux handle pin (index+1)
 
-
+encryptUser :: String -> String
+encryptUser user
+    | length user <= 4 = user
+    | otherwise = take 4 user ++ replicate (length user - 4) '*'
+  
 desencriptarLista :: [String] -> String -> [String]
 desencriptarLista [] _  = []
 desencriptarLista (x:xs) pin = cifrarConXor pin x : desencriptarLista xs pin
