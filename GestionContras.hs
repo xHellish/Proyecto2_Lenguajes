@@ -85,7 +85,7 @@ menuEliminarContraseña usuario = do
     case readMaybe opcion :: Maybe Int of
         Just numero -> do
 
-            putStrLn $ "Número recibido: " ++ show numero
+            putStrLn $ "Numero recibido: " ++ show numero
 
             -- otra vez construimos el nombre del archivo
             let nombre = nombreUsuario usuario
@@ -100,7 +100,7 @@ menuEliminarContraseña usuario = do
 
         Nothing -> do
 
-            putStrLn "Entrada inválida. Por favor, ingrese un número."
+            putStrLn "Entrada invalida. Por favor, ingrese un numero."
             menuEliminarContraseña usuario  -- vuelve a pedir la entrada
 
 

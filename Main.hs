@@ -13,7 +13,7 @@ menuPrincipal = do
     putStrLn "\n===== MENU PRINCIPAL ====="
     putStrLn "1. Crear usuario"
     putStrLn "2. Probar cifrado de un mensaje"
-    putStrLn "3. Iniciar Sesión"
+    putStrLn "3. Iniciar Sesion"
     putStrLn "4. Salir"
     putStr "Seleccione una opcion: "
     hFlush stdout
@@ -41,7 +41,7 @@ opcionCrearUsuario = do
 iniciarSesion :: IO()
 iniciarSesion = do 
 
-    putStrLn "\n=== INICIAR SESIÓN ==="
+    putStrLn "\n=== INICIAR SESION ==="
     putStr "Ingrese el nombre del usuario: "
     hFlush stdout
     nombre <- getLine
