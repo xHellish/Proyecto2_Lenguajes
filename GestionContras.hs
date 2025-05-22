@@ -144,7 +144,6 @@ listarContraseñasAux handle pin index = do
             -- no se muestran las letras del user luego de la cuarta letra
             let user = encryptUser (listaDesencriptada !! 1) 
             -- se imprime la contraseña con *
-            print ( listaDesencriptada !! 2)
             let pass = replicate (length (listaDesencriptada !! 2)) '*'
 
             putStrLn (show index ++". " ++"Servicio: "++ show (head listaDesencriptada) ++ " Usuario: " ++ user ++ " Contraseña: " ++ pass)
