@@ -13,13 +13,13 @@ import Text.Read (readMaybe)
 menuGestionContraseñas :: Usuario -> IO ()
 menuGestionContraseñas usuario = do
 
-    putStrLn "\n===== MENU GESTIÓN DE CONTRASEÑAS ====="
-    putStrLn "A Continuación se presentan sus contraseñas guardadas:\n"
+    putStrLn "\n===== MENU GESTION DE CONTRASEÑAS ====="
+    putStrLn "A Continuacion se presentan sus contraseñas guardadas:\n"
     listarContraseñas usuario
     putStrLn "1. Guardar Contraseña"
     putStrLn "2. Modificar Contraseña"
     putStrLn "3. Eliminar Contraseña"
-    putStrLn "4. Cerrar Sesión"
+    putStrLn "4. Cerrar Sesion"
     putStr "Seleccione una opcion: "
     hFlush stdout
     opcion <- getLine
@@ -27,12 +27,12 @@ menuGestionContraseñas usuario = do
         "1" -> menuGuardarContraseña usuario >> menuGestionContraseñas usuario
         "2" -> menuEliminarContraseña usuario
         "3" -> menuEliminarContraseña usuario >> menuGestionContraseñas usuario
-        "4" -> putStrLn "Cerrando sesión. ¡Hasta luego!"
+        "4" -> putStrLn "Cerrando sesion. ¡Hasta luego!"
         _   -> putStrLn "Opcion invalida, intente de nuevo." >> menuGestionContraseñas usuario
 
 
 
--- Opción 1: guardar contraseña nueva
+-- Opcion 1: guardar contraseña nueva
 
 menuGuardarContraseña :: Usuario -> IO()
 menuGuardarContraseña usuario = do
@@ -50,7 +50,7 @@ menuGuardarContraseña usuario = do
     pass <- getLine
 
     guardarContraseña servicio user pass usuario
-    putStrLn "Se guardó la contraseña exitosamente"
+    putStrLn "Se guardo la contraseña exitosamente"
 
 
 guardarContraseña :: String -> String -> String -> Usuario -> IO()
@@ -73,7 +73,7 @@ guardarContraseña servicio user pass usuario = do
     agregarAlFinal nombreArchivo linea
 
 
--- Opción 2: Eliminar contraseña 
+-- Opcion 2: Eliminar contraseña 
 menuEliminarContraseña :: Usuario -> IO()
 menuEliminarContraseña usuario = do
     putStrLn "\n===== ELIMINAR CONTRASEÑA ====="
