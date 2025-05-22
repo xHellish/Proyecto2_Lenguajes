@@ -1,6 +1,5 @@
 -- OcultarContraseña.hs
 module OcultarContraseña (getPassword) where
-
 import qualified System.Console.Haskeline as H
 import Data.Maybe (fromMaybe)
 

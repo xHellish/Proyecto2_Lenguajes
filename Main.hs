@@ -1,96 +1,77 @@
--- Main.hs
-module Main where
-
+import ModeloUsuarios
+import GestionContras
 import OcultarContraseña (getPassword)
+import Cifrado
 import System.IO (hFlush, stdout)
 
--- ========================================
--- Constantes 
--- ---------------------------------------
-usuarioCorrectoSistema :: String
-usuarioCorrectoSistema = "test_user"  -- test para el usuario
+main :: IO ()
+main = menuPrincipal
 
-pinCorrectoSistema :: String
-pinCorrectoSistema = "1111"  -- test para el pin
-
--- ========================================
--- Funciones 
--- ---------------------------------------
-
--- ========================================
--- Bucle menú principal
-bucle_menu_principal :: IO ()
-bucle_menu_principal = do
-    putStrLn "----------=========================----------"
-    putStrLn "                MENÚ PRINCIPAL      "
-    putStrLn "----------=========================----------"
-    putStrLn "1. Registrarse"
-    putStrLn "2. Iniciar sesión"
-    putStrLn "3. Salir"
-    putStr   "Seleccione una opción: "
+-- Menú principal con repetición
+menuPrincipal :: IO ()
+menuPrincipal = do
+    putStrLn "\n===== MENU PRINCIPAL ====="
+    putStrLn "1. Crear usuario"
+    putStrLn "2. Probar cifrado de un mensaje"
+    putStrLn "3. Iniciar Sesión"
+    putStrLn "4. Salir"
+    putStr "Seleccione una opcion: "
     hFlush stdout
     opcion <- getLine
-    manejarOpcion opcion
+    case opcion of
+        "1" -> opcionCrearUsuario >> menuPrincipal
+        "2" -> opcionProbarCifrado >> menuPrincipal
+        "3" -> iniciarSesion
+        "4" -> putStrLn "Saliendo del programa. ¡Hasta luego!"
+        _   -> putStrLn "Opcion invalida, intente de nuevo." >> menuPrincipal
 
--- ========================================
--- Manejar elección del menú
-manejarOpcion :: String -> IO ()
-manejarOpcion "1" = registrarse
-manejarOpcion "2" = iniciar_sesion
-manejarOpcion "3" = putStrLn "\nSaliendo del programa. Hasta luego."
-manejarOpcion _   = do
-    putStrLn "\nOpción no válida. Intente nuevamente.\n"
-    bucle_menu_principal
-
--- ========================================
--- Registrarse
-registrarse :: IO ()
-registrarse = do
-    putStr "Ingrese su nombre: "
+-- Opción 1: Crear usuario
+opcionCrearUsuario :: IO ()
+opcionCrearUsuario = do
+    putStrLn "\n=== CREAR USUARIO ==="
+    putStr "Ingrese el nombre del usuario: "
     hFlush stdout
-    nuevo_user <- getLine
+    nombre <- getLine
+    pinCreado <- getPassword "Ingrese el PIN del usuario: "
 
-    -- Usar getPassword para ocultar la contraseña
-    nueva_pass <- getPassword "Cree su PIN: "
-    putStrLn ("\nHola, " ++ nuevo_user ++ "! Se ha creado su usuario con la contraseña " ++ replicate (length nueva_pass) '*')
+    crearUsuario nombre pinCreado
 
--- ========================================
--- Validar usuario y PIN
-validar_usuario :: String -> String -> Bool
-validar_usuario user pin = user == usuarioCorrectoSistema && pin == pinCorrectoSistema
+-- Opción 1: Iniciar Sesion 
 
--- ========================================
--- Acceso exitoso
-ingresar_en_sistema :: IO ()
-ingresar_en_sistema = putStrLn "\nBienvenido al sistema." -- -> TO DO
+iniciarSesion :: IO()
+iniciarSesion = do 
 
--- ========================================
--- Acceso denegado
-acceso_denegado :: IO ()
-acceso_denegado = putStrLn "\nAcceso denegado. Usuario o PIN incorrecto." -- -> TO DO
-
-
--- ========================================
--- Iniciar sesion
-iniciar_sesion :: IO ()
-iniciar_sesion = do
-    putStr "Nombre de usuario: "
+    putStrLn "\n=== INICIAR SESIÓN ==="
+    putStr "Ingrese el nombre del usuario: "
     hFlush stdout
-    usuario <- getLine
+    nombre <- getLine
+    pin <- getPassword "Ingrese el PIN del usuario: "
 
-    -- Contraseña con el módulo para ocultarla
-    pass <- getPassword "Ingrese su PIN: "
-    putStrLn ("Iniciando sesión...")
+    pinCorrecto <- validarPin nombre pin 
+    if not pinCorrecto
+        then do
+            let usuario = Usuario { nombreUsuario = nombre, pinUsuario = pin }
+            menuGestionContraseñas usuario
+        else 
+            putStrLn "Credenciales no dan resultados"
 
-    if validar_usuario usuario pass
-        then ingresar_en_sistema
-        else acceso_denegado
+    menuPrincipal
 
--- ========================================
--- MAIN
-main :: IO ()
-main = do
-    -- Usar getPassword para ocultar el PIN
-
-    bucle_menu_principal
     
+
+-- Opción 2: Probar el cifrado simple
+opcionProbarCifrado :: IO ()
+opcionProbarCifrado = do
+    putStrLn "\n=== PRUEBA DE CIFRADO ==="
+    putStr "Ingrese la clave (PIN): "
+    hFlush stdout
+    clave <- getLine
+    putStr "Ingrese el mensaje a cifrar: "
+    hFlush stdout
+    mensaje <- getLine
+
+    let cifrado = cifrarConXor clave mensaje
+    let descifrado = cifrarConXor clave cifrado
+
+    putStrLn ("Mensaje cifrado: " ++ cifrado)
+    putStrLn ("Mensaje descifrado: " ++ descifrado)
