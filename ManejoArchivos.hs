@@ -1,6 +1,6 @@
 -- Manejo de archivos
 
-module ManejoArchivos (agregarAlFinal, leerLinea, abrirArchivo, cerrarArchivo, listarTxt, crearArchivo, eliminarLinea) where
+module ManejoArchivos (agregarAlFinal, leerLinea, abrirArchivo, cerrarArchivo, listarTxt, crearArchivo, eliminarLinea, obtenerLinea) where
 import System.IO
 import System.Directory (getDirectoryContents) --funcion para ver el contenido de un directorio
 import Data.List (isSuffixOf) --Funcion para ver la terminacion de un string
@@ -28,6 +28,23 @@ cerrarArchivo handle = hClose handle
 
 leerLinea :: Handle -> IO String
 leerLinea handle = hGetLine handle
+
+
+obtenerLinea :: Int -> String-> IO String
+obtenerLinea idx ruta = do
+
+    -- se saca el contenido del archivo
+    contenido <- readFile ruta
+    contenido `deepseq` return () -- Se usa esta funcion para evitar el lazy loading de readFile
+
+    -- se pasan las lineas del archivo a una lista
+    let lineas = lines contenido
+
+    -- se retorna la linea correspondiente al índice
+    if idx < 0 || idx >= length lineas
+    then return "Índice fuera de rango"
+    else return (lineas !! idx)
+
 
 
 -- Esta funcion lista todos los txts de un directorio 
