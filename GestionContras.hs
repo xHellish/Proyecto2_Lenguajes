@@ -214,7 +214,7 @@ menuVerContraseña usuario = do
             putStrLn "Entrada invalida. Por favor, ingrese un numero."
             menuVerContraseña usuario  -- vuelve a pedir la entrada
 
-verContraseña :: FilePath -> Int -> String -> [String]
+verContraseña :: FilePath -> Int -> String -> IO [String]
 verContraseña nombreArchivo servicio pin = do
 
     linea <- obtenerLinea servicio nombreArchivo
